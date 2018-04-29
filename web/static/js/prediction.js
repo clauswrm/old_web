@@ -50,17 +50,20 @@ function predict() {
             'content-type': 'text/plain'
         },
         body: img
+    }).catch(function (reason) {
+        console.error(reason);
+        showPrediction('Error predicting number')
     }).then(function (response) {
         return response.text();
-    }).then(function (prediction) {
-        showPrediction(prediction);
+    }).then(function (number) {
+        showPrediction(number)
     });
 }
 
 
-function showPrediction(number) {
-    var prediction = document.getElementById('prediction');
-    prediction.innerHTML = "Prediction: " + number;
+function showPrediction(prediction) {
+    var predictionText = document.getElementById('prediction');
+    predictionText.innerHTML = "Prediction: " + prediction;
 }
 
 

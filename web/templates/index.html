@@ -3,9 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <title>Home - clausmartinsen.no</title>
+        <link rel="stylesheet" href="../static/css/style.css">
     </head>
     <body>
-        <p>Hei {{ user }}!</p>
-        <p>Her kommer clausmartinsen.no</p>
+        <section>
+            <p>Her kommer clausmartinsen.no</p>
+            <p>I mellomtiden, la meg gjette tallet ditt.</p>
+        </section>
+
+        <section>
+            <canvas id="draw" width="200" height="200"></canvas>
+        </section>
+        <section>
+            <button class="clear_button" onclick="clearDrawing()">Start på nytt</button>
+        </section>
+        <section>
+            <p id="prediction">Ingen gjett enda.</p>
+        </section>
+        <section>
+            <p>Powered by TensorFlow.</p>
+        </section>
     </body>
+    <script src="../static/js/prediction.js"></script>
 </html>

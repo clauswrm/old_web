@@ -1,15 +1,25 @@
-from flask import render_template
+from flask import render_template, request
 from web import app
+from web.digit_predictor import DigitPredictor, convert_base64_image
+
+model = DigitPredictor()
 
 
 @app.route('/')
-def hello_world():
-    return 'hei'
+def index():
+    return render_template('index.html')
 
 
 @app.route('/user/<user>')
-def default(user):
-    return render_template('index.html', user=user)
+def user_page(user):
+    return render_template('user.html', user=user)
+
+
+@app.route('/predict', methods=['GET', 'POST'])
+def predict():
+    image_data = request.get_data()
+    image = convert_base64_image(image_data)
+    return str(model.predict(image))
 
 
 @app.errorhandler(404)

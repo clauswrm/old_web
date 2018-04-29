@@ -40,7 +40,7 @@ class DigitPredictor:
 
     def predict(self, image_array):
         predictions = self.model.predict(image_array, verbose=0)
-        return np.argmax(predictions)
+        return int(np.argmax(predictions))
 
 def convert_base64_image(image_data):
     """ Converts a base64 encoded PNG to a 4D tensor """

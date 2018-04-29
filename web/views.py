@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, Response
 from web import app
 from web.digit_predictor import DigitPredictor, convert_base64_image
 
@@ -18,8 +18,12 @@ def user_page(user):
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     image_data = request.get_data()
-    image = convert_base64_image(image_data)
-    return str(model.predict(image))
+    try:
+        image = convert_base64_image(image_data)
+        prediction = str(model.predict(image))
+        return Response(prediction, status=200)
+    except RuntimeError:
+        return Response('Server could not predict input', status=500)
 
 
 @app.errorhandler(404)

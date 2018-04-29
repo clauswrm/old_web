@@ -1,7 +1,7 @@
-var canvas = document.getElementById('draw');
-var context = canvas.getContext('2d');
-var url = 'http://127.0.0.1:5000/predict';
-var painting = false;
+const canvas = document.getElementById('draw');
+const context = canvas.getContext('2d');
+const url = 'http://clausmartinsen.no/predict';
+let painting = false;
 
 // Start drawing
 canvas.addEventListener('mousedown', function (e) {
@@ -23,8 +23,8 @@ canvas.addEventListener('mouseup', function (e) {
 });
 
 function draw(event) {
-    var mousePos = getRelativeMousePos(event);
-    var radius = 5;
+    const mousePos = getRelativeMousePos(event);
+    const radius = 5;
 
     context.strokeStyle = '#000000';
     context.moveTo(mousePos.x, mousePos.y);
@@ -35,7 +35,7 @@ function draw(event) {
 }
 
 function getRelativeMousePos(e) {
-    var rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     return {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
@@ -43,33 +43,30 @@ function getRelativeMousePos(e) {
 }
 
 function predict() {
-    var img = canvas.toDataURL();
+    const img = canvas.toDataURL();
     fetch(url, {
         method: 'POST',
         headers: {
             'content-type': 'text/plain'
         },
         body: img
-    }).catch(function (reason) {
+    }).catch(reason => {
         console.error(reason);
         showPrediction('Error predicting number')
-    }).then(function (response) {
+    }).then(response => {
         return response.text();
-    }).then(function (number) {
-        showPrediction(number)
+    }).then(number => {
+        showPrediction(number);
     });
 }
 
-
 function showPrediction(prediction) {
-    var predictionText = document.getElementById('prediction');
+    const predictionText = document.getElementById('prediction');
     predictionText.innerHTML = "Prediction: " + prediction;
 }
-
 
 function clearDrawing() {
     context.beginPath();
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.stroke();
 }
-

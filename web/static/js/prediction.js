@@ -1,6 +1,6 @@
 const canvas = document.getElementById('draw');
 const context = canvas.getContext('2d');
-const url = 'http://clausmartinsen.no/predict';
+const url = 'https://clausmartinsen.no/predict';
 let painting = false;
 
 // Start drawing

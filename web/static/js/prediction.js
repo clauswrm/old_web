@@ -8,13 +8,28 @@ let previousMousePos = null;
 // Start drawing
 canvas.addEventListener('mousedown', function (e) {
     painting = true;
-    previousMousePos = getRelativeMousePos(e)
+    previousMousePos = getRelativeMousePos(e);
 });
 
-// Draw some more...
+canvas.addEventListener('touchstart', function (e) {
+    e.preventDefault(); // Prevent screen scroll
+    painting = true;
+    let touch = e.touches[0];
+    previousMousePos = getRelativeMousePos(touch);
+});
+
+// Continue drawing
 canvas.addEventListener('mousemove', function (e) {
     if (painting) {
         draw(e);
+    }
+});
+
+canvas.addEventListener('touchmove', function (e) {
+    e.preventDefault(); // Prevent screen scroll
+    if (painting) {
+        let touch = e.touches[0];
+        draw(touch);
     }
 });
 
@@ -22,13 +37,20 @@ canvas.addEventListener('mousemove', function (e) {
 canvas.addEventListener('mouseup', function (e) {
     painting = false;
     previousMousePos = null;
-    predict()
+    predict();
+});
+
+canvas.addEventListener('touchend', function (e) {
+    e.preventDefault(); // Prevent screen scroll
+    painting = false;
+    previousMousePos = null;
+    predict();
 });
 
 function draw(event) {
     const mousePos = getRelativeMousePos(event);
     context.strokeStyle = '#000000';
-    context.lineJoin = "round";
+    context.lineJoin = 'round';
     context.lineWidth = 10;
 
     // Draw a line from previous pos to current pos
@@ -64,13 +86,13 @@ function predict() {
         showPrediction(number);
     }).catch(reason => {
         console.error(reason);
-        showPrediction("ERROR")
+        showPrediction('ERROR');
     });
 }
 
 function showPrediction(prediction) {
     const predictionText = document.getElementById('prediction');
-    predictionText.innerHTML = "Prediction: " + prediction;
+    predictionText.innerHTML = 'Prediction: ' + prediction;
 }
 
 function clearDrawing() {

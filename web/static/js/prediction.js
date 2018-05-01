@@ -1,15 +1,17 @@
 const canvas = document.getElementById('draw');
 const context = canvas.getContext('2d');
 const url = 'https://clausmartinsen.no/predict';
+
 let painting = false;
+let previousMousePos = null;
 
 // Start drawing
 canvas.addEventListener('mousedown', function (e) {
     painting = true;
-    draw(e);
+    previousMousePos = getRelativeMousePos(e)
 });
 
-// Draw...
+// Draw some more...
 canvas.addEventListener('mousemove', function (e) {
     if (painting) {
         draw(e);
@@ -19,19 +21,25 @@ canvas.addEventListener('mousemove', function (e) {
 // Stop drawing and make model predict
 canvas.addEventListener('mouseup', function (e) {
     painting = false;
+    previousMousePos = null;
     predict()
 });
 
 function draw(event) {
     const mousePos = getRelativeMousePos(event);
-    const radius = 5;
-
     context.strokeStyle = '#000000';
-    context.moveTo(mousePos.x, mousePos.y);
+    context.lineJoin = "round";
+    context.lineWidth = 10;
+
+    // Draw a line from previous pos to current pos
     context.beginPath();
-    context.arc(mousePos.x, mousePos.y, radius, 0, 2 * Math.PI);
-    context.fill();
+    context.moveTo(previousMousePos.x, previousMousePos.y);
+    context.lineTo(mousePos.x, mousePos.y);
+    context.closePath();
     context.stroke();
+
+    // Update previous mouse pos
+    previousMousePos = mousePos;
 }
 
 function getRelativeMousePos(e) {
@@ -50,13 +58,13 @@ function predict() {
             'content-type': 'text/plain'
         },
         body: img
-    }).catch(reason => {
-        console.error(reason);
-        showPrediction('Error predicting number')
     }).then(response => {
         return response.text();
     }).then(number => {
         showPrediction(number);
+    }).catch(reason => {
+        console.error(reason);
+        showPrediction("ERROR")
     });
 }
 
@@ -66,7 +74,9 @@ function showPrediction(prediction) {
 }
 
 function clearDrawing() {
+    // Clear whole canvas
     context.beginPath();
     context.clearRect(0, 0, canvas.width, canvas.height);
+    context.closePath();
     context.stroke();
 }

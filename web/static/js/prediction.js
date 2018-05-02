@@ -7,12 +7,13 @@ let previousMousePos = null;
 
 // Start drawing
 canvas.addEventListener('mousedown', function (e) {
+    e.preventDefault();
     painting = true;
     previousMousePos = getRelativeMousePos(e);
 });
 
 canvas.addEventListener('touchstart', function (e) {
-    e.preventDefault(); // Prevent screen scroll
+    e.preventDefault();
     painting = true;
     let touch = e.touches[0];
     previousMousePos = getRelativeMousePos(touch);
@@ -20,13 +21,14 @@ canvas.addEventListener('touchstart', function (e) {
 
 // Continue drawing
 canvas.addEventListener('mousemove', function (e) {
+    e.preventDefault();
     if (painting) {
         draw(e);
     }
 });
 
 canvas.addEventListener('touchmove', function (e) {
-    e.preventDefault(); // Prevent screen scroll
+    e.preventDefault();
     if (painting) {
         let touch = e.touches[0];
         draw(touch);
@@ -35,13 +37,14 @@ canvas.addEventListener('touchmove', function (e) {
 
 // Stop drawing and make model predict
 canvas.addEventListener('mouseup', function (e) {
+    e.preventDefault();
     painting = false;
     previousMousePos = null;
     predict();
 });
 
 canvas.addEventListener('touchend', function (e) {
-    e.preventDefault(); // Prevent screen scroll
+    e.preventDefault();
     painting = false;
     previousMousePos = null;
     predict();

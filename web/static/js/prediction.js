@@ -1,5 +1,12 @@
 const canvas = document.getElementById('draw');
 const context = canvas.getContext('2d');
+// Superscale the canvas for high-resolution screens
+canvas.width = 500;
+canvas.height = 500;
+canvas.style.width = "250px";
+canvas.style.height = "250px";
+context.scale(2, 2);
+
 const url = 'https://clausmartinsen.no/predict';
 
 let painting = false;
@@ -54,7 +61,7 @@ function draw(event) {
     const mousePos = getRelativeMousePos(event);
     context.strokeStyle = '#000000';
     context.lineJoin = 'round';
-    context.lineWidth = 10;
+    context.lineWidth = 15;
 
     // Draw a line from previous pos to current pos
     context.beginPath();

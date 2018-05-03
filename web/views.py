@@ -1,6 +1,6 @@
 from flask import render_template, request, Response
 from web import app
-from web.digit_predictor import DigitPredictor, convert_base64_image
+from web.digit_predictor import DigitPredictor, convert_canvas_image_to_array
 
 model = DigitPredictor()
 
@@ -19,7 +19,7 @@ def user_page(user):
 def predict():
     image_data = request.get_data()
     try:
-        image = convert_base64_image(image_data)
+        image = convert_canvas_image_to_array(image_data)
         prediction = str(model.predict(image))
         return Response(prediction, status=200)
     except RuntimeError:

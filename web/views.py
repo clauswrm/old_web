@@ -1,4 +1,5 @@
-from flask import render_template, request, Response
+from flask import render_template, request, Response, jsonify
+
 from web import app
 from web.digit_predictor import DigitPredictor, convert_canvas_image_to_array
 
@@ -20,8 +21,8 @@ def predict():
     image_data = request.get_data()
     try:
         image = convert_canvas_image_to_array(image_data)
-        prediction = str(model.predict(image))
-        return Response(prediction, status=200)
+        prediction = model.predict(image)
+        return jsonify(prediction)
     except RuntimeError:
         return Response('Server could not predict input', status=500)
 

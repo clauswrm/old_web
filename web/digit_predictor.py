@@ -39,8 +39,15 @@ class DigitPredictor:
         self.model = model
 
     def predict(self, image_array):
-        predictions = self.model.predict(image_array, verbose=0)
-        return predictions.tolist()[0]  # Get the first prediction since we only predicted one image
+        """
+        Predicts the decimal digit in the given image array.
+
+        :param image_array: a (1,28,28,1) tensor for the Keras model to classify
+        :return: a dictionary containing {'prediction': X, 'probabilities': [0,1...9]}
+        """
+        probabilities = self.model.predict(image_array, verbose=0)
+        prediction = int(np.argmax(probabilities))
+        return {'prediction': prediction, 'probabilities': probabilities.tolist()[0]}
 
 
 def convert_canvas_image_to_array(image_data):

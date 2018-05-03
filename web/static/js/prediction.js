@@ -91,18 +91,24 @@ function predict() {
         },
         body: img
     }).then(response => {
-        return response.text();
-    }).then(number => {
-        showPrediction(number);
+        return response.json();
+    }).then(json => {
+        showPrediction(json, true);
     }).catch(reason => {
         console.error(reason);
-        showPrediction('ERROR');
+        showPrediction('ERROR', false);
     });
 }
 
-function showPrediction(prediction) {
+function showPrediction(response, success) {
     const predictionText = document.getElementById('prediction');
-    predictionText.innerHTML = 'Prediction: ' + prediction;
+    if (success) {
+        const probabilities = response.probabilities;
+        const prediction = response.prediction;
+        predictionText.innerHTML = 'Prediction: ' + prediction;
+    } else {
+        predictionText.innerHTML = 'Prediction: ' + response;
+    }
 }
 
 function clearDrawing() {
